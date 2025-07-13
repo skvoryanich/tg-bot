@@ -1,0 +1,33 @@
+[Unit]
+Description=Mood Tracker Telegram Bot
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+User=nodejs
+ExecStart=/usr/bin/node /opt/mood-tracker-bot/dist/index.js
+WorkingDirectory=/opt/mood-tracker-bot
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/mood-tracker-bot/.env
+
+# Logging
+StandardOutput=append:/var/log/mood-tracker-bot/out.log
+StandardError=append:/var/log/mood-tracker-bot/error.log
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/mood-tracker-bot/data
+ReadWritePaths=/var/log/mood-tracker-bot
+
+# Limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
